@@ -3,7 +3,7 @@ library(e1071)
 library(randomForest)
 library(tidyverse)
 
-ymjdata <- readRDS("C:/Users/aj710/Desktop/r/zhsj.rds")
+ymjdata <- readRDS("C:/Users/aj710/Desktop/YRY/Raw data.rds")
 
 names(ymjdata)[1] <- 'fam' 
 
@@ -31,7 +31,7 @@ y <- y[od$error.mean<4& od$error.sd <0.7]
 data_use <- cbind.data.frame(ANTH_c=y,x)
 
 require(caTools)
-sel <- sample.split(data_use$ANTH_c, SplitRatio = .7)
+sel <- sample.split(data_use$ANTH_c, SplitRatio = .8)
 train1 = subset(data_use, sel == TRUE)
 test  = subset(data_use, sel  == FALSE)
 #####################
@@ -76,7 +76,7 @@ library(caTools)
 library(e1071)
 
 # 读取数据
-ymjdata <- readRDS("C:/Users/aj710/Desktop/r/zhsj.rds")
+ymjdata <- readRDS("C:/Users/aj710/Desktop/YRY/Raw data.rds")
 names(ymjdata)[1] <- 'fam'  # 将第一列重命名为 'fam'
 
 # 对 NIR 数据进行归一化处理
@@ -108,7 +108,7 @@ data_use <- cbind.data.frame(ANTH_c = y, x)
 
 # 划分训练集和测试集
 set.seed(123) # 设置随机种子以便结果可重复
-sel <- sample.split(data_use$ANTH_c, SplitRatio = 0.7)
+sel <- sample.split(data_use$ANTH_c, SplitRatio = 0.8)
 train1 <- subset(data_use, sel == TRUE)
 test <- subset(data_use, sel == FALSE)
 
@@ -160,7 +160,7 @@ results <- data.frame(RF_rmse_train = numeric(300),
 # 多次训练模型
 for (i in 1:300) {
   # 数据分割
-  sel <- sample.split(data_use$ANTH_c, SplitRatio = 0.7)
+  sel <- sample.split(data_use$ANTH_c, SplitRatio = 0.8)
   train1 = subset(data_use, sel == TRUE)
   test = subset(data_use, sel == FALSE)
   
@@ -231,7 +231,7 @@ library(caTools)
 library(xgboost)  # 加载 xgboost 包
 
 # 读取数据
-ymjdata <- readRDS("C:/Users/aj710/Desktop/r/zhsj.rds")
+ymjdata <- readRDS("C:/Users/aj710/Desktop/YRY/Raw data.rds")
 names(ymjdata)[1] <- 'fam'  # 将第一列重命名为 'fam'
 
 # 对 NIR 数据进行归一化处理
@@ -263,7 +263,7 @@ data_use <- cbind.data.frame(ANTH_c = y, x)
 
 # 划分训练集和测试集
 set.seed(123) # 设置随机种子以便结果可重复
-sel <- sample.split(data_use$ANTH_c, SplitRatio = 0.7)
+sel <- sample.split(data_use$ANTH_c, SplitRatio = 0.8)
 train1 <- subset(data_use, sel == TRUE)
 test <- subset(data_use, sel == FALSE)
 
