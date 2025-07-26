@@ -65,64 +65,6 @@ cat("R² (Test):", test_r2, "\n")
 cat("RMSE (Test):", test_rmse, "\n")
 
 
-# 新建一个图形设备并调整大小
-dev.new(width = 10, height = 8)
-
-# 绘制训练集的回归散点图
-plot(train1$ANTH_c, train_pred, main = "Regression Scatter Plot (Train & Test)",
-     xlab = "Measured FAPAR", ylab = "Estimated FAPAR", pch = 1, col = "orange", cex = 1.5,
-     xlim = c(min(c(train1$ANTH_c, test$ANTH_c)), max(c(train1$ANTH_c, test$ANTH_c))),
-     ylim = c(min(c(train_pred, test_pred)), max(c(train_pred, test_pred))),
-     cex.main = 1.5)  # 增大标题字体大小
-
-# 添加测试集的散点图
-points(test$ANTH_c, test_pred, pch = 0, col = "blue", cex = 1.5)  # 测试集: 空心正方形，蓝色
-
-# 绘制回归线
-abline(0, 1, col = "black", lty = 2)  # 绘制回归线
-
-# 在训练集回归散点图中添加R²和RMSE值（向左调整位置）
-text(x = max(train1$ANTH_c) * 0.35, y = max(train_pred) * 0.95,  # 修改x坐标，使其向左移动
-     labels = paste("R² (Train): ", round(train_r2, 3)), col = "black", cex = 1)
-text(x = max(train1$ANTH_c) * 0.35, y = max(train_pred) * 0.90,  # 同样调整y坐标
-     labels = paste("RMSE (Train): ", round(train_rmse, 3)), col = "black", cex = 1)
-
-# 在预测集回归散点图中添加R²和RMSE值（适当向右调整位置）
-text(x = max(test$ANTH_c) * 0.45, y = max(test_pred) * 0.95,  # 修改x坐标，使其向右移动
-     labels = paste("R² (Test): ", round(test_r2, 3)), col = "black", cex = 1)
-text(x = max(test$ANTH_c) * 0.45, y = max(test_pred) * 0.90,  # 同样调整y坐标
-     labels = paste("RMSE (Test): ", round(test_rmse, 3)), col = "black", cex = 1)
-
-# 设置保存路径和图像尺寸
-png("regression_scatter_plot_plsr.png", width = 1000, height = 800)
-
-# 绘制训练集的回归散点图
-plot(train1$ANTH_c, train_pred, main = "Regression Scatter Plot (Train & Test)",
-     xlab = "Measured FAPAR", ylab = "Estimated FAPAR", pch = 1, col = "orange", cex = 1.5,
-     xlim = c(min(c(train1$ANTH_c, test$ANTH_c)), max(c(train1$ANTH_c, test$ANTH_c))),
-     ylim = c(min(c(train_pred, test_pred)), max(c(train_pred, test_pred))),
-     cex.main = 1.5)  # 增大标题字体大小
-
-# 添加测试集的散点图
-points(test$ANTH_c, test_pred, pch = 0, col = "blue", cex = 1.5)  # 测试集: 空心正方形，蓝色
-
-# 绘制回归线
-abline(0, 1, col = "black", lty = 2)  # 绘制回归线
-
-# 在训练集回归散点图中添加R²和RMSE值（向左调整位置）
-text(x = max(train1$ANTH_c) * 0.35, y = max(train_pred) * 0.95,  # 修改x坐标，使其向左移动
-     labels = paste("R² (Train): ", round(train_r2, 3)), col = "black", cex = 1)
-text(x = max(train1$ANTH_c) * 0.35, y = max(train_pred) * 0.90,  # 同样调整y坐标
-     labels = paste("RMSE (Train): ", round(train_rmse, 3)), col = "black", cex = 1)
-
-# 在预测集回归散点图中添加R²和RMSE值（适当向右调整位置）
-text(x = max(test$ANTH_c) * 0.45, y = max(test_pred) * 0.95,  # 修改x坐标，使其向右移动
-     labels = paste("R² (Test): ", round(test_r2, 3)), col = "black", cex = 1)
-text(x = max(test$ANTH_c) * 0.45, y = max(test_pred) * 0.90,  # 同样调整y坐标
-     labels = paste("RMSE (Test): ", round(test_rmse, 3)), col = "black", cex = 1)
-
-# 关闭图形设备并保存为PNG文件
-dev.off()
 
 ########################
 ##      svm         ######
@@ -188,37 +130,6 @@ pre_train1 <- predict(model_svm, newdata = train1)
 error_train <- train1$ANTH_c - pre_train1  
 SVM_rmse_train <- sqrt(mean(error_train^2))
 SVM_R2_train <- cor(train1$ANTH_c, pre_train1)^2
-
-# 新建一个图形设备并调整大小
-dev.new(width = 10, height = 8)  # 可以调整为适当的宽度和高度
-
-# 绘制训练集和测试集回归散点图
-plot(train1$ANTH_c, pre_train1, main = "Regression Scatter Plot",
-     xlab = "Actual Values", ylab = "Predicted Values", 
-     pch = 1, col = "orange", cex = 1.5,  # 训练集: 空心圆，橙色
-     xlim = range(c(test$ANTH_c, train1$ANTH_c)),  # 设置 x 轴范围为训练集和测试集的最小和最大值
-     ylim = range(c(pre_test, pre_train1)))  # 设置 y 轴范围为预测值的最小和最大值
-
-# 绘制测试集的散点图
-points(test$ANTH_c, pre_test, pch = 0, col = "blue", cex = 1.5)  # 测试集: 空心正方形，蓝色
-
-# 添加回归线
-abline(0, 1, col = "black", lty = 2)  # 绘制回归线
-
-# 在图中添加R²和RMSE值
-# 调整文本位置到稍微右上角，避免被覆盖并确保完全显示
-
-# 训练集文本位置调整
-text(x = max(train1$ANTH_c) * 0.8, y = max(pre_train1) * 1.1, 
-     labels = paste("R² (Train): ", round(SVM_R2_train, 3)), col = "black", cex = 0.9)
-text(x = max(train1$ANTH_c) * 0.8, y = max(pre_train1) * 1.03, 
-     labels = paste("RMSE (Train): ", round(SVM_rmse_train, 2)), col = "black", cex = 0.9)
-
-# 测试集文本位置调整
-text(x = max(test$ANTH_c) * 0.8, y = max(pre_test) * 1.1, 
-     labels = paste("R² (Test): ", round(SVM_R2_test, 3)), col = "black", cex = 0.9)
-text(x = max(test$ANTH_c) * 0.8, y = max(pre_test) * 1.03, 
-     labels = paste("RMSE (Test): ", round(SVM_rmse_test, 2)), col = "black", cex = 0.9)
 
 
 
@@ -306,30 +217,6 @@ pre_train1 <- predict(final_model, newdata = best_train)
 # 预测测试集
 pre_test <- predict(final_model, newdata = best_test)
 
-# 新建一个图形设备并调整大小
-dev.new(width = 10, height = 8)  # 调整宽度和高度
-
-# 绘制训练集和测试集的散点图
-plot(best_train$ANTH_c, pre_train1, ylim = c(0, 2), xlim = c(0, 2), 
-     main = "Training and Test Set Regression Scatter Plot", xlab = "Measured FAPAR", ylab = "Estimated FAPAR", 
-     pch = 1, col = "orange", family = "serif", cex.main = 1.0)  # 训练集空心圆
-
-# 添加回归线
-abline(0, 1)
-
-# 添加训练集的R²和RMSE值
-text(1, 1.8, paste("R²: ", round(final_r2_test, 2)), col = "black", cex = 0.9, family = "serif")
-text(1, 1.6, paste("RMSE: ", round(final_rmse_test, 2)), col = "black", cex = 0.9, family = "serif")
-
-# 预测测试集
-pre_test <- predict(final_model, newdata = best_test)
-
-# 使用 points() 添加测试集的散点图
-points(best_test$ANTH_c, pre_test, pch = 0, col = "blue", cex = 1.2)  # 测试集空心正方形
-
-# 添加测试集的R²和RMSE值
-text(1, 1.4, paste("R²: ", round(final_r2_test, 2)), col = "black", cex = 0.9, family = "serif")
-text(1, 1.2, paste("RMSE: ", round(final_rmse_test, 2)), col = "black", cex = 0.9, family = "serif")
 
 ####################
 
@@ -415,67 +302,3 @@ error_train <- train_label - pre_train1
 XGB_rmse_train <- sqrt(mean(error_train^2))
 XGB_R2_train <- cor(train_label, pre_train1)^2
 
-# 新建一个图形设备并调整大小
-dev.new(width = 10, height = 8)  # 可以调整为适当的宽度和高度
-
-# 绘制训练集和测试集回归散点图
-plot(train_label, pre_train1, main = "Regression Scatter Plot",
-     xlab = "Actual Values", ylab = "Predicted Values", 
-     pch = 1, col = "orange", cex = 1.5,  # 训练集: 空心圆，橙色
-     xlim = range(c(test_label, train_label)),  # 设置 x 轴范围为训练集和测试集的最小和最大值
-     ylim = range(c(pre_test, pre_train1)))  # 设置 y 轴范围为预测值的最小和最大值
-
-# 绘制测试集的散点图
-points(test_label, pre_test, pch = 0, col = "blue", cex = 1.5)  # 测试集: 空心正方形，蓝色
-
-# 添加回归线
-abline(0, 1, col = "black", lty = 2)  # 绘制回归线
-
-# 在图中添加R²和RMSE值
-# 调整文本位置到稍微右上角，避免被覆盖并确保完全显示
-
-# 训练集文本位置调整
-text(x = max(train_label) * 0.8, y = max(pre_train1) * 1.1, 
-     labels = paste("R² (Train): ", round(XGB_R2_train, 3)), col = "black", cex = 0.9)
-text(x = max(train_label) * 0.8, y = max(pre_train1) * 1.03, 
-     labels = paste("RMSE (Train): ", round(XGB_rmse_train, 2)), col = "black", cex = 0.9)
-
-# 测试集文本位置调整
-text(x = max(test_label) * 0.8, y = max(pre_test) * 1.1, 
-     labels = paste("R² (Test): ", round(XGB_R2_test, 3)), col = "black", cex = 0.9)
-text(x = max(test_label) * 0.8, y = max(pre_test) * 1.03, 
-     labels = paste("RMSE (Test): ", round(XGB_rmse_test, 2)), col = "black", cex = 0.9)
-
-
-# 设置保存路径和图像尺寸
-png("regression_scatter_plot_XGB.png", width = 1000, height = 800)
-
-# 新建一个图形设备并调整大小
-dev.new(width = 10, height = 8)  # 可以调整为适当的宽度和高度
-
-# 绘制训练集和测试集回归散点图
-plot(train_label, pre_train1, main = "Regression Scatter Plot",
-     xlab = "Actual Values", ylab = "Predicted Values", 
-     pch = 1, col = "orange", cex = 1.5,  # 训练集: 空心圆，橙色
-     xlim = range(c(test_label, train_label)),  # 设置 x 轴范围为训练集和测试集的最小和最大值
-     ylim = range(c(pre_test, pre_train1)))  # 设置 y 轴范围为预测值的最小和最大值
-
-# 绘制测试集的散点图
-points(test_label, pre_test, pch = 0, col = "blue", cex = 1.5)  # 测试集: 空心正方形，蓝色
-
-# 添加回归线
-abline(0, 1, col = "black", lty = 2)  # 绘制回归线
-
-# 在图中添加R²和RMSE值
-text(x = min(train_label) * 0.3, y = max(pre_train1) * 1.1, 
-     labels = paste("R² (Train): ", round(XGB_R2_train, 3)), col = "black", cex = 0.9)
-text(x = min(train_label) * 0.3, y = max(pre_train1) * 1.03, 
-     labels = paste("RMSE (Train): ", round(XGB_rmse_train, 2)), col = "black", cex = 0.9)
-
-text(x = min(test_label) * 0.3, y = max(pre_test) * 1.1, 
-     labels = paste("R² (Test): ", round(XGB_R2_test, 3)), col = "black", cex = 0.9)
-text(x = min(test_label) * 0.3, y = max(pre_test) * 1.03, 
-     labels = paste("RMSE (Test): ", round(XGB_rmse_test, 2)), col = "black", cex = 0.9)
-
-# 关闭图形设备并保存为PNG文件
-dev.off()
